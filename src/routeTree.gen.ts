@@ -10,33 +10,74 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AchievementsRouteImport } from './routes/achievements'
+import { Route as ResearchRouteImport } from './routes/research'
+import { Route as TeachingRouteImport } from './routes/teaching'
+import { Route as WritingRouteImport } from './routes/writing'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AchievementsRoute = AchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeachingRoute = TeachingRouteImport.update({
+  id: '/teaching',
+  path: '/teaching',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WritingRoute = WritingRouteImport.update({
+  id: '/writing',
+  path: '/writing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
+  '/research': typeof ResearchRoute
+  '/teaching': typeof TeachingRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
+  '/research': typeof ResearchRoute
+  '/teaching': typeof TeachingRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/achievements': typeof AchievementsRoute
+  '/research': typeof ResearchRoute
+  '/teaching': typeof TeachingRoute
+  '/writing': typeof WritingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/achievements' | '/research' | '/teaching' | '/writing'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/achievements' | '/research' | '/teaching' | '/writing'
+  id:
+    '__root__' | '/' | '/achievements' | '/research' | '/teaching' | '/writing'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AchievementsRoute: typeof AchievementsRoute
+  ResearchRoute: typeof ResearchRoute
+  TeachingRoute: typeof TeachingRoute
+  WritingRoute: typeof WritingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +89,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/achievements': {
+      id: '/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AchievementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teaching': {
+      id: '/teaching'
+      path: '/teaching'
+      fullPath: '/teaching'
+      preLoaderRoute: typeof TeachingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/writing': {
+      id: '/writing'
+      path: '/writing'
+      fullPath: '/writing'
+      preLoaderRoute: typeof WritingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AchievementsRoute: AchievementsRoute,
+  ResearchRoute: ResearchRoute,
+  TeachingRoute: TeachingRoute,
+  WritingRoute: WritingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
