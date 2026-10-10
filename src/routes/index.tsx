@@ -1,24 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { motion, useReducedMotion } from 'motion/react';
+import { Download, ArrowRight, Compass, Users, Sprout, MoveUpRight } from 'lucide-react';
+import portrait from '@/assets/professor-portrait.jpg';
+import { profile } from '@/data/profile';
+import { publications } from '@/data/publications';
+import { writing } from '@/data/writing';
+import { pageHead } from '@/data/seo';
+import { Button } from '@/components/ui/button';
+import { Page, Reveal, SocialLinks, SectionHeading, CountStat, Newsletter, SampleNote } from '@/components/academic/shared';
+export const Route=createFileRoute('/')({head:()=>({...pageHead('About','Meet Adrian Mercer, a fictional professor exploring strategy, organizations, and responsible leadership.','/'),scripts:[{type:'application/ld+json',children:JSON.stringify({'@context':'https://schema.org','@type':'Person',name:profile.name,jobTitle:profile.title,description:'Fictional sample academic profile',affiliation:{'@type':'Organization',name:profile.university}})}]}),component:About});
+function About(){const reduced=useReducedMotion();const icons=[Compass,Users,Sprout,MoveUpRight];return <Page><div className="site-container"><section className="hero"><motion.figure className="portrait-wrap" initial={reduced?false:{opacity:0,scale:.98}} animate={{opacity:1,scale:1}} transition={{duration:.7}}><img src={portrait} alt="AI-generated sample portrait of fictional professor Adrian Mercer" className="portrait" width={832} height={1024}/><figcaption className="portrait-caption">Sample portrait — replace with your own photo.</figcaption></motion.figure><div><Reveal><span className="eyebrow">Strategy · Organizations · Leadership</span></Reveal><Reveal delay={.06}><h1 className="hero-name">{profile.name}</h1></Reveal><Reveal delay={.12}><p className="hero-role">{profile.title}, {profile.university}</p></Reveal><Reveal delay={.18}><p className="hero-intro">{profile.introduction}</p></Reveal><Reveal delay={.24}><div className="hero-actions"><Button asChild><a href="/downloads/sample-cv.pdf" download><Download/>Download CV</a></Button><Button asChild variant="outline"><Link to="/research">Read my research</Link></Button><Button asChild variant="outline"><Link to="/contact">Get in touch</Link></Button></div><div className="mt-5"><SocialLinks/></div></Reveal></div></section></div><div className="topic-band" aria-hidden="true"><div className="topic-band-inner">{['Organizational Adaptation','Strategic Decision-Making','Responsible Innovation','Leadership & Change','The Future of Work'].map(t=><span key={t} className="flex items-center gap-8">{t}<span className="topic-star">✳</span></span>)}</div></div><div className="site-container"><section className="section"><Reveal><SectionHeading label="A little background" title="Curiosity, with a purpose."/><div className="prose-block">{profile.bio.map(p=><p key={p}>{p}</p>)}</div><div className="mt-5"><SampleNote/></div></Reveal><Reveal className="stats-strip">{profile.stats.map(s=><CountStat key={s.label} {...s}/>)}</Reveal></section><section className="section pt-0"><Reveal><SectionHeading label="Research" title="Research interests" to="/research" linkLabel="Explore my research"/></Reveal><div className="interest-grid">{profile.interests.map((interest,i)=>{const Icon=icons[i]??Compass;return <Reveal key={interest.title} delay={i*.06} className="interest-card"><Icon className="interest-icon"/><h3>{interest.title}</h3><p>{interest.description}</p></Reveal>;})}</div></section></div><section className="current-band"><Reveal className="site-container current-grid"><div><span className="eyebrow">In progress</span><h2 className="mt-2">Currently</h2></div><div><h3>On my research desk</h3><p>{profile.currentResearch}</p></div><div><h3>In the classroom</h3><p>{profile.currentTeaching}</p></div></Reveal></section><section className="site-container section"><Reveal><SectionHeading label="Ideas & inquiry" title="Selected recent work"/></Reveal><div className="recent-grid"><Reveal className="recent-column"><h3>From my research</h3>{publications.slice(0,3).map(p=><article className="preview-item" key={p.id}><span className="meta">{p.year} · {p.topic} · Sample publication</span><Link to="/research"><h4>{p.title}</h4></Link><p className="meta">{p.journal}</p></article>)}<Link className="text-link mt-3" to="/research">All publications<ArrowRight/></Link></Reveal><Reveal className="recent-column" delay={.08}><h3>From my notebook</h3>{writing.slice(0,3).map(p=><article className="preview-item" key={p.id}><span className="meta">{p.date} · {p.type} · Sample writing</span><Link to="/writing"><h4>{p.title}</h4></Link><p className="meta">{p.summary}</p></article>)}<Link className="text-link mt-3" to="/writing">All writing<ArrowRight/></Link></Reveal></div></section><Newsletter/></Page>;}

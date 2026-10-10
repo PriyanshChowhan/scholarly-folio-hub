@@ -7,6 +7,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    defaultErrorComponent: ({ error }) => <div className="site-container section"><h1>This page could not load</h1><p>{error.message}</p></div>,
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
